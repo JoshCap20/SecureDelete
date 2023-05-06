@@ -50,7 +50,14 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    if (secure_delete(argv[1], argc == 3 ? atoi(argv[2]) : DEFAULT_PASSES) != 0) {
+    int passes = (argc == 3) ? atoi(argv[2]) : DEFAULT_PASSES;
+
+    if (passes < 1) {
+        fprintf(stderr, "Invalid passes parameter: %s\n", argv[2]);
+        return 1;
+    }
+
+    if (secure_delete(argv[1], passes) != 0) {
         perror("Error securely deleting file");
         return 1;
     }
