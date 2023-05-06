@@ -3,6 +3,8 @@
 #include <string.h>
 #include <time.h>
 
+#define DEFAULT_PASSES 3
+
 int secure_delete(const char *filename, int passes) {
     FILE *file;
     long file_size;
@@ -43,12 +45,12 @@ int secure_delete(const char *filename, int passes) {
 }
 
 int main(int argc, char *argv[]) {
-    if (argc != 2) {
-        printf("Usage: %s <file>\n", argv[0]);
+    if (argc != 2 && argc != 3) {
+        printf("Usage: %s <file> [<passes>]\n", argv[0]);
         return 1;
     }
 
-    if (secure_delete(argv[1], 3) != 0) {
+    if (secure_delete(argv[1], argc == 3 ? atoi(argv[2]) : DEFAULT_PASSES) != 0) {
         perror("Error securely deleting file");
         return 1;
     }
